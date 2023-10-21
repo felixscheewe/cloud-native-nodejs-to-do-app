@@ -1,4 +1,12 @@
 # Docker To-Do-App
+## Table of Contents
+1. 
+2. 
+3. 
+4. 
+5. 
+
+
 
 ## Einführung
 Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application beleuchtet:
@@ -6,13 +14,11 @@ Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application 
 - Eine lokale Umgebung für die Entwicklung einer Node.js-Anwendung mit Containern einrichten
 - Tests für eine Node.js-Anwendung mithilfe von Containern ausführen
 - Konfigurieren einer CI/CD-Pipeline für eine containerisierte Node.js-Anwendung mithilfe von GitHub-Actions
-- Lokale Bereitstellung der containerisierte Node.js-Anwendung in Kubernetes
-
-Dies ist ein Test
 
 ## Funktionalität
+(#faqs)
 
-## Applikation starten
+## Applikation starteb
 Innerhalb des docker-nodejs-todo-app Verzeichnisses führe im Terminal folgenden Befehl aus
 docker compose up --build
 
