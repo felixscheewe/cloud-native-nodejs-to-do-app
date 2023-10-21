@@ -1,4 +1,4 @@
-# Docker To-Do-App
+# Cloud Native Nodejs To-Do-App
 ## Table of Contents
 1. 
 2. 
@@ -16,7 +16,6 @@ Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application 
 - Konfigurieren einer CI/CD-Pipeline für eine containerisierte Node.js-Anwendung mithilfe von GitHub-Actions
 
 ## Funktionalität
-(#faqs)
 
 ## Applikation starteb
 Innerhalb des docker-nodejs-todo-app Verzeichnisses führe im Terminal folgenden Befehl aus
@@ -64,10 +63,19 @@ Im folgenden wird ein Unit Test für die Nodejs Anwendung durchgeführt.
 
 ## 4 Konfiguration von CI/ CD für die Nodejs-Anwendung
 
-Im folgenden werden GitHub-Actions eingerichtet und verwendet, um ein Docker-Image zu erstellen und testen sowie dieses an Docker Hub zu übertragen.
+Im folgenden werden GitHub-Actions eingerichtet und verwendet, um einen Wokflow zum Erstellen, Testen und Übertragen des Images an Docker-Hub zu verwenden.
 
 - Hierzu wurde ein GitHub Repository eingerichtet.
-- In den Einstellungen wurde
+- In den Einstellungen wurde unter den Einstellungen ein Secret mit dem Namen "DOCKER_USERNAME" und dem Wert der Docker-ID eingerichtet.
+- In Docker Hub wurde ein "Personal Access Token (PAT)" mit dem Namen "node-docker" eingerichtet.
+- Der PAT wurde als 2. Secret im GitHub Repository mit dem Namen "DOCKERHUB_Token" hinterlegt.
+- Das Lokale Repository wurde auf Gihub hochgeladen
+- Innerhalb des Repositorys wurde unter GitHub Actions ein eigener Workflow eingerichtet, welcher in der main.yml-Datei beschrieben ist.
+- Der Workflow wird automatisch bei neuen Commits in den Main-Branch ausgeführt.
+- Im Actions-Tab können die einzelnen Schritte des CI/ CD-Schritte nachvollzogen werden.
+- Auf Docker Hub wird im Anschluss das Image gepushed
+
+
 
 
 
