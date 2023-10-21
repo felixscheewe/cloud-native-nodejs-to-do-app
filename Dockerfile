@@ -2,7 +2,7 @@
 
 ARG NODE_VERSION=18.0.0
 
-FROM arm64v8/node:${NODE_VERSION}-alpine as base
+FROM node:${NODE_VERSION}-alpine as base
 WORKDIR /usr/src/app
 EXPOSE 3000
 
