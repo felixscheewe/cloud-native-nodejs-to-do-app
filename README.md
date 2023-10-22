@@ -1,32 +1,37 @@
 # Cloud Native Nodejs To-Do-App
 ## Table of Contents
-1. 
-2. 
-3. 
+1. Einführung
+2. Installation
+3. Vorgenommene Konfigurationen
 4. 
 5. 
 
 
 
-## Einführung
+## 1 Einführung
 Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application beleuchtet:
 - Containerisieren und Ausführen einer Node.js-Anwendung
 - Eine lokale Umgebung für die Entwicklung einer Node.js-Anwendung mit Containern einrichten
 - Tests für eine Node.js-Anwendung mithilfe von Containern ausführen
 - Konfigurieren einer CI/CD-Pipeline für eine containerisierte Node.js-Anwendung mithilfe von GitHub-Actions
 
-## Funktionalität
+## 2 Installation
 
-## Applikation starteb
+### 2.1 Ersteinrichtung
+Klone das Repository in ein lokales Verzeichnis.
+
+### 2.2 Applikation starten
 Innerhalb des docker-nodejs-todo-app Verzeichnisses führe im Terminal folgenden Befehl aus
 docker compose up --build
 
 Rufe anschließend über den Browser folgenden Link auf: http://localhost:3000/
 
-## Applikation stoppen
+### 2.3 Applikation stoppen
 Gib im Terminal Ctrl+c ein
 
-## 1 Eine lokale Datenbank hinzufügen und Daten persistieren
+## 3. Vorgenommene Konfigurationen
+
+### 3.1 Eine lokale Datenbank hinzufügen und Daten persistieren
 Container können genutzt werden, um lokale Services wie eine Datenbank aufzusetzen.
 
 Hierzu wurde in der Compose.yaml-Datei eine Postgres-Datenbank und ein Volume mit den entsprechenden Umgebungsvariablen definiert. Über ein Secret wird ein Txt-File mit den Zugangsdaten zur Datenbank referenziert. 
@@ -35,7 +40,7 @@ Die Persistenz der Daten kann überprüft werden, indem der Container zunächst 
 docker compose rm 
 docker compose up --build
 
-## 2 Konfigurieren und Ausführen eines Entwicklungs-Containers
+### 3.2 Konfigurieren und Ausführen eines Entwicklungs-Containers
 Das Dockerfile ist sowohl für das testen als auch die Produktion geeignet, da Nodemon konfiguriert wurde. 
 
 - Hierzu wurde im Dockerfile ein Label als Basis für die FROM node:${NODE_VERSION}-alpine-Anweisung hinzugefügt. Dies ermöglicht es, in anderen Build-Stages auf diese Build-Stage zu verweisen. 
@@ -50,7 +55,7 @@ Das Dockerfile ist sowohl für das testen als auch die Produktion geeignet, da N
 - Anschliessen kann docker-nodejs-sample/src/static/js/app.js aufgerufen werden und beispielsweise in Zeile 109 die Bezeichnung "Add Item" auf "Add" geändert werden.
 - Nachdem http://localhost:3000/ im Browser aktualisiert wird, wird der geänderte Text direkt angezeigt.
 
-## 3 Nodejs Test in einem Container ausführen
+### 3.3 Nodejs Test in einem Container ausführen
 Im folgenden wird ein Unit Test für die Nodejs Anwendung durchgeführt.
 
 - Mit "docker compose run server npm run test" wird das Test-Script in package.json-Datei ausgeführt
