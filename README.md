@@ -3,10 +3,9 @@
 1. Einführung
 2. Installation
 3. Vorgenommene Konfigurationen
-4. 
-5. 
-
-
+4. Vorteile und Nachteile der Cloud-Native-Realisierung
+5. Datensicherheit und DSGVO
+6. Alternative Realisierungsmöglichkeiten
 
 ## 1 Einführung
 Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application beleuchtet:
@@ -18,10 +17,10 @@ Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application 
 ## 2 Installation
 
 ### 2.1 Ersteinrichtung
-Klone das Repository in ein lokales Verzeichnis.
+Klone das Repository in ein lokales Verzeichnis mit: git clone https://github.com/felixscheewe/cloud-native-nodejs-to-do-app.git
 
 ### 2.2 Applikation starten
-Innerhalb des docker-nodejs-todo-app Verzeichnisses führe im Terminal folgenden Befehl aus
+Innerhalb des docker-nodejs-todo-app Verzeichnisses führe im Terminal folgenden Befehl aus:
 docker compose up --build
 
 Rufe anschließend über den Browser folgenden Link auf: http://localhost:3000/
@@ -66,9 +65,9 @@ Im folgenden wird ein Unit Test für die Nodejs Anwendung durchgeführt.
 - Mit "--no-cache" wird sichergestellt, dass die Tests immer ausgeführt werden
 - "--target test" verwendet die Test Stage als Ziel.
 
-## 4 Konfiguration von CI/ CD für die Nodejs-Anwendung
+### 3.4 Konfiguration von CI/ CD für die Nodejs-Anwendung
 
-Im folgenden werden GitHub-Actions eingerichtet und verwendet, um einen Wokflow zum Erstellen, Testen und Übertragen des Images an Docker-Hub zu verwenden.
+Im folgenden wurden GitHub-Actions eingerichtet und verwendet, um einen Wokflow zum Erstellen, Testen und Übertragen des Images an Docker-Hub zu verwenden.
 
 - Hierzu wurde ein GitHub Repository eingerichtet.
 - In den Einstellungen wurde unter den Einstellungen ein Secret mit dem Namen "DOCKER_USERNAME" und dem Wert der Docker-ID eingerichtet.
@@ -80,51 +79,36 @@ Im folgenden werden GitHub-Actions eingerichtet und verwendet, um einen Wokflow 
 - Im Actions-Tab können die einzelnen Schritte des CI/ CD-Schritte nachvollzogen werden.
 - Auf Docker Hub wird im Anschluss das Image gepushed
 
-
-
-
-
-
-
-
-- **Compose.yaml**: Definiert einen Database Service (Postgres) und ein Volume um Daten zu persistieren. 
-- **Dockerfile**: Das Dockerfile ist sowohl für das testen als auch die Produktion geeignet, da Nodemon konfiguriert wurde. Hierzu wurde ein Label als Basis für die FROM node:${NODE_VERSION}-alpine-Anweisung hinzugefügt. Dies ermöglicht es, in anderen Build-Stages auf diese Build-Stage zu verweisen. Eine neue Build-Stage wurde mit der Bezeichnung dev hinzugefügt, um die dev-Abhängigkeiten zu installieren und den Container mit npm run dev zu starten. Schließlich wurde eine Stufe mit der Bezeichnung prod hinzugefügt, die die dev-Abhängigkeiten auslässt und die Anwendung mit node src/index.js ausführt. Um aus dem Multi-Stage Dockerfile die Dev stage mit Compose auszuführen wurde in der Compose.yaml die target: dev Anweisung hinzugefügt.  
-
-Also, add a new volume to the server service for the bind mount. For this application, you'll mount ./src from your local machine to /usr/src/app/src in the container.
-
-Lastly, publish port 9229 for debugging.
-## Vorteile und Nachteile der Cloud-Native-Realisierung
-### Vorteile:
+## 4 Vorteile und Nachteile der Cloud-Native-Realisierung
+### 4.1 Vorteile:
 - **Skalierbarkeit**: Cloud-Native-Anwendungen können einfach horizontal oder vertikal skaliert werden, um den Anforderungen gerecht zu werden. Dies ermöglicht eine bessere Leistung und Verfügbarkeit.
 - **Isolation und Unabhängigkeit**: Durch die Verwendung von Containern können verschiedene Teile der Anwendung isoliert und unabhängig voneinander entwickelt und bereitgestellt werden.
 - **Schnelle Bereitstellung**: Mit Kubernetes als Orchestrierungstool können Updates und Bereitstellungen effizienter und schneller durchgeführt werden.
 - **Automatisierung**: Automatisierte Workflows, wie CI/CD, können problemlos integriert werden, um den Entwicklungs- und Bereitstellungsprozess zu beschleunigen.
 
-### Nachteile:
+### 4.2 Nachteile:
 - **Komplexität**: Die Einführung von Cloud-Native-Technologien kann komplex sein und erfordert eine gewisse Einarbeitung und Schulung.
 - **Kosten**: Die Nutzung von Cloud-Ressourcen kann kostspielig sein, wenn die Anwendung nicht effizient optimiert wird.
 - **Datensicherheit**: Die Sicherung von Daten und die Gewährleistung der Datensicherheit kann eine Herausforderung sein, insbesondere wenn sensible Daten verarbeitet werden.
 - **Kompatibilität**: Die Anwendung muss möglicherweise angepasst werden, um vollständig in einer Cloud-Native-Umgebung zu funktionieren.
 
-## Datensicherheit und DSGVO
+## 5 Datensicherheit und DSGVO
 Die Gewährleistung der Datensicherheit ist in einer Cloud-Native-Umgebung von entscheidender Bedeutung, insbesondere im Hinblick auf die Einhaltung der Datenschutz-Grundverordnung (DSGVO). Hier sind einige Schritte und Überlegungen:
-- **Datenverschlüsselung**: Sensible Daten sollten verschlüsselt werden, sowohl im Ruhezustand als auch während der Übertragung. Dies ist entscheidend, um Datenschutzanforderungen zu erfüllen.
+- **Datenverschlüsselung**: Sensible Daten sollten verschlüsselt werden, sowohl im Ruhezustand als auch während der Übertragung. Dies ist entscheidend, um Datenschutzanforderungen zu erfüllen. Durch die Verwendung eines Secrets (Siehe Abschnitt 3.1) wurde diesem Aspekt rechnung getragen.
 - **Zugriffskontrolle**: Die Berechtigungen für den Zugriff auf Daten und Ressourcen sollten streng kontrolliert und überwacht werden, um sicherzustellen, dass nur autorisierte Benutzer auf sensible Daten zugreifen können.
-- **Auditing und Protokollierung**: Die Anwendung sollte Protokolle führen und Ereignisse aufzeichnen, um die Nachvollziehbarkeit und Compliance zu gewährleisten.
-- **DSGVO-Konformität**: Die Anwendung sollte so gestaltet sein, dass sie die Anforderungen der DSGVO erfüllt. Dies kann die Einwilligung der Benutzer, das Recht auf Löschung und das Recht auf Datenübertragbarkeit umfassen.
-- **Sicherheitsbewertungen**: Regelmäßige Sicherheitsbewertungen und Penetrationstests sind notwendig, um potenzielle Schwachstellen aufzudecken und zu beheben.
+- **Auditing und Protokollierung**: Die Anwendung sollte Protokolle führen und Ereignisse aufzeichnen, um die Nachvollziehbarkeit und Compliance zu gewährleisten. Die Unterteilung in eine Prod- und eine Testumgebung sowie die Einrichtung von Continous Integration und Continous Development über GitHub-Actions (Abschnitt 3.2, 3.3 und 3.4) dokumentiert und testet Anpassungen automatisiert.
+- **DSGVO-Konformität**: Die Anwendung sollte so gestaltet sein, dass sie die Anforderungen der DSGVO erfüllt. Dies kann die Einwilligung der Benutzer, das Recht auf Löschung und das Recht auf Datenübertragbarkeit umfassen. Die in der Datenbank gespeicherten Daten (Abschnit 3.1) können gelöscht sowie einzelne To-Dos erledigt werden.
+- **Sicherheitsbewertungen**: Regelmäßige Sicherheitsbewertungen und Penetrationstests sind notwendig, um potenzielle Schwachstellen aufzudecken und zu beheben. Dies wurde durch die eingerichteten Test (Abschnitt 3.2, 3.3 und 3.4) berücksichtigt.
 
 Es ist wichtig zu beachten, dass die DSGVO für die Anwendung relevant sein kann, insbesondere wenn sie personenbezogene Daten verarbeitet. Die Implementierung von Sicherheitsmaßnahmen und die Einhaltung der DSGVO sind entscheidend, um Datenschutzverletzungen zu verhindern und rechtliche Konsequenzen zu vermeiden.
 
-## Alternative Realisierungsmöglichkeiten
+## 6 Alternative Realisierungsmöglichkeiten
 Die Realisierung als Cloud-Native-Anwendung bietet zahlreiche Vorteile, aber es gibt auch alternative Ansätze, die in Betracht gezogen werden können:
 - **Monolithische Anwendung**: Statt einer Microservices-Architektur kann die Anwendung als ein großer monolithischer Block entwickelt werden. Dies erleichtert die Verwaltung, kann jedoch zu Problemen bei der Skalierbarkeit und Wartbarkeit führen.
 - **Traditionelle Server-Bereitstellung**: Anstelle der Verwendung von Containern und Orchestrierungstools wie Kubernetes könnte die Anwendung auf herkömmlichen Servern oder virtuellen Maschinen gehostet werden. Dies bietet weniger Automatisierung und Skalierbarkeit.
 - **Keine Cloud-Native Technologien**: Die Anwendung könnte ohne den Einsatz von Cloud-Native-Technologien entwickelt werden. In diesem Fall wären die Vorteile der Skalierbarkeit und Automatisierung möglicherweise eingeschränkt.
-- **Datenbank-Hosting**: Anstelle der Verwendung von Containern für die Datenbank könnte eine gemanagte Datenbanklösung in der Cloud genutzt werden, um die Datenbankverwaltung zu vereinfachen.
 
-## Zusammenfassung
-Die Readme-Datei bietet eine Übersicht über die Cloud-Native-Application, ihre Vorteile und Nachteile sowie die Sicherheitsaspekte im Zusammenhang mit der DSGVO. Sie behandelt auch alternative Realisierungsmöglichkeiten und ermutigt dazu, die Architektur entsprechend den spezifischen Anforderungen und Zielen der Anwendung zu wählen.
+
 
 Um eine erfolgreiche Cloud-Native-Anwendung zu entwickeln und bereitzustellen, ist es entscheidend, die Sicherheit der Daten zu gewährleisten und die Datenschutzanforderungen zu erfüllen. Gleichzeitig sollten die Vorteile der Skalierbarkeit, Automatisierung und Effizienz genutzt werden, die die Cloud-Native-Technologien bieten.
 
