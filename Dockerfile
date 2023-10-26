@@ -1,9 +1,11 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_VERSION=18.0.0
+# syntax=docker/dockerfile:1
 
-# Arm-Architektur verwenden
-FROM arm64v8/node:${NODE_VERSION}-alpine as base
+ARG NODE_VERSION=14.17.5
+
+# Verwende das emulierte ARM64-Basisimage
+FROM multiarch/ubuntu-core:arm64-20.04 as base
 WORKDIR /usr/src/app
 EXPOSE 3000
 
