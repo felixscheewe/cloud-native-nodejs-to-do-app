@@ -17,13 +17,15 @@ Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application 
 ## 2 Installation
 
 ### 2.1 Ersteinrichtung
-Klone das Repository in ein lokales Verzeichnis mit: git clone https://github.com/felixscheewe/cloud-native-nodejs-to-do-app.git
+Klone das Repository in ein lokales Verzeichnis mit: 
+`git clone https://github.com/felixscheewe/cloud-native-nodejs-to-do-app.git`
 
 ### 2.2 Applikation starten
 Innerhalb des docker-nodejs-todo-app Verzeichnisses führe im Terminal folgenden Befehl aus:
-docker compose up --build
+`docker compose up --build`
 
-Rufe anschließend über den Browser folgenden Link auf: http://localhost:3000/
+Rufe anschließend über den Browser folgenden Link auf: 
+`http://localhost:3000/`
 
 ### 2.3 Applikation stoppen
 Gib im Terminal Ctrl+c ein
@@ -36,45 +38,45 @@ Container können genutzt werden, um lokale Services wie eine Datenbank aufzuset
 Hierzu wurde in der Compose.yaml-Datei eine Postgres-Datenbank und ein Volume mit den entsprechenden Umgebungsvariablen definiert. Über ein Secret wird ein Txt-File mit den Zugangsdaten zur Datenbank referenziert. 
 
 Die Persistenz der Daten kann überprüft werden, indem der Container zunächst gelöscht und danach wieder erstellt wird: 
-docker compose rm 
-docker compose up --build
+`docker compose rm` 
+`docker compose up --build`
 
 ### 3.2 Konfigurieren und Ausführen eines Entwicklungs-Containers
 Das Dockerfile ist sowohl für das testen als auch die Produktion geeignet, da Nodemon konfiguriert wurde. 
 
 - Hierzu wurde im Dockerfile ein Label als Basis für die FROM node:${NODE_VERSION}-alpine-Anweisung hinzugefügt. Dies ermöglicht es, in anderen Build-Stages auf diese Build-Stage zu verweisen. 
-- Eine neue Build-Stage wurde mit der Bezeichnung dev hinzugefügt, um die dev-Abhängigkeiten zu installieren und den Container mit npm run dev zu starten. 
-- Schließlich wurde eine Stage mit der Bezeichnung prod hinzugefügt, die die dev-Abhängigkeiten auslässt und die Anwendung mit node src/index.js ausführt. 
-- Um aus dem Multi-Stage Dockerfile die Dev stage mit Compose auszuführen zu können, wurde in der Compose.yaml die target: dev Anweisung hinzugefügt.  
-- Zudem wurde über den Server Service ein neues Volume angebunden. ./src wird hierzu von dem lokalen Rechner nach /usr/src/app/src im Container gemountet.
-- Zum Schluss wird der Port 9229 für das Debugging freigegeben.
+- Eine neue Build-Stage wurde mit der Bezeichnung `dev` hinzugefügt, um die dev-Abhängigkeiten zu installieren und den Container mit `npm run dev` zu starten. 
+- Schließlich wurde eine Stage mit der Bezeichnung `prod` hinzugefügt, die die dev-Abhängigkeiten auslässt und die Anwendung mit `node src/index.js` ausführt. 
+- Um aus dem Multi-Stage Dockerfile die Dev-stage mit Compose auszuführen zu können, wurde in der `Compose.yaml` die `target: dev` Anweisung hinzugefügt.  
+- Zudem wurde über den `Server Service` ein neues Volume angebunden. `./src` wird hierzu von dem lokalen Rechner nach `/usr/src/app/src` im Container gemountet.
+- Zum Schluss wird der `Port 9229` für das Debugging freigegeben.
 
 Überprüft werden kann der Entwicklung-Container durch folgende Schritte:
-- Die Applikation wird mit docker compose up --build gestartet und mit http://localhost:3000/ im Browser aufgerufen
-- Anschliessen kann docker-nodejs-sample/src/static/js/app.js aufgerufen werden und beispielsweise in Zeile 109 die Bezeichnung "Add Item" auf "Add" geändert werden.
-- Nachdem http://localhost:3000/ im Browser aktualisiert wird, wird der geänderte Text direkt angezeigt.
+- Die Applikation wird mit `docker compose up --build` gestartet und mit `http://localhost:3000/` im Browser aufgerufen
+- Anschliessen kann `docker-nodejs-sample/src/static/js/app.js` aufgerufen werden und beispielsweise in `Zeile 109` die Bezeichnung `"Add Item"` auf `"Add"` geändert werden.
+- Nachdem `http://localhost:3000/` im Browser aktualisiert wird, wird der geänderte Text direkt angezeigt.
 
 ### 3.3 Nodejs Test in einem Container ausführen
 Im folgenden wird ein Unit Test für die Nodejs Anwendung durchgeführt.
 
-- Mit "docker compose run server npm run test" wird das Test-Script in package.json-Datei ausgeführt
-- Um Tests während der Entwicklung auszuführen, wurde das Dockerfile entsprechend angepasst. 
-- Statt in der Testphase CMD zu nutzen, wird RUN genutzt um die Test auszuführen. Hintergrund ist, dass der CMD-Befehl ausgeführt wird, wenn der Container läuft, während der RUN-Befehl ausgeführt wird, wenn das Abbild erstellt wird und die Erstellung fehlschlägt, wenn die Tests fehlschlagen.
-- Folgender Befehl wird ausgeführt, um ein neues Image unter Nutzung der Test Stage zu erstellen und die Testergebnisse einzusehen: " docker build -t node-docker-image-test --progress=plain --no-cache --target test"
-- Mit "--progress=plain" kann die Build-Ausgabe angezeigt werden
-- Mit "--no-cache" wird sichergestellt, dass die Tests immer ausgeführt werden
-- "--target test" verwendet die Test Stage als Ziel.
+- Mit `docker compose run server npm run test` wird das Test-Script in `package.json-Datei` ausgeführt
+- Um Tests während der Entwicklung auszuführen, wurde das `Dockerfile` entsprechend angepasst. 
+- Statt in der Testphase `CMD` zu nutzen, wird `RUN` genutzt um die Test auszuführen. Hintergrund ist, dass der CMD-Befehl ausgeführt wird, wenn der Container läuft, während der RUN-Befehl ausgeführt wird, wenn das Abbild erstellt wird und die Erstellung fehlschlägt, wenn die Tests fehlschlagen.
+- Folgender Befehl wird ausgeführt, um ein neues Image unter Nutzung der Test Stage zu erstellen und die Testergebnisse einzusehen: `docker build -t node-docker-image-test --progress=plain --no-cache --target test`
+- Mit `--progress=plain` kann die Build-Ausgabe angezeigt werden
+- Mit `--no-cache` wird sichergestellt, dass die Tests immer ausgeführt werden
+- `--target test` verwendet die Test Stage als Ziel.
 
 ### 3.4 Konfiguration von CI/ CD für die Nodejs-Anwendung
 
 Im folgenden wurden GitHub-Actions eingerichtet und verwendet, um einen Wokflow zum Erstellen, Testen und Übertragen des Images an Docker-Hub zu verwenden.
 
 - Hierzu wurde ein GitHub Repository eingerichtet.
-- In den Einstellungen wurde unter den Einstellungen ein Secret mit dem Namen "DOCKER_USERNAME" und dem Wert der Docker-ID eingerichtet.
-- In Docker Hub wurde ein "Personal Access Token (PAT)" mit dem Namen "node-docker" eingerichtet.
-- Der PAT wurde als 2. Secret im GitHub Repository mit dem Namen "DOCKERHUB_Token" hinterlegt.
+- In den Einstellungen wurde unter den Einstellungen ein Secret mit dem Namen `DOCKER_USERNAME` und dem Wert der Docker-ID eingerichtet.
+- In Docker Hub wurde ein `Personal Access Token (PAT)` mit dem Namen `node-docker` eingerichtet.
+- Der PAT wurde als 2. Secret im GitHub Repository mit dem Namen `DOCKERHUB_Token` hinterlegt.
 - Das Lokale Repository wurde auf Gihub hochgeladen
-- Innerhalb des Repositorys wurde unter GitHub Actions ein eigener Workflow eingerichtet, welcher in der main.yml-Datei beschrieben ist.
+- Innerhalb des Repositorys wurde unter GitHub Actions ein eigener Workflow eingerichtet, welcher in der `main.yml-Datei` beschrieben ist.
 - Der Workflow wird automatisch bei neuen Commits in den Main-Branch ausgeführt.
 - Im Actions-Tab können die einzelnen Schritte des CI/ CD-Schritte nachvollzogen werden.
 - Auf Docker Hub wird im Anschluss das Image gepushed
