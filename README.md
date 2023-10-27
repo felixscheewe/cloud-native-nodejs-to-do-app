@@ -83,8 +83,8 @@ Im folgenden wurden GitHub-Actions eingerichtet und verwendet, um einen Wokflow 
 
 ## 4 Vorteile und Nachteile der Cloud-Native-Realisierung
 ### 4.1 Vorteile:
-- **Skalierbarkeit**: Cloud-Native-Anwendungen können einfach horizontal oder vertikal skaliert werden, um den Anforderungen gerecht zu werden. Dies ermöglicht eine bessere Leistung und Verfügbarkeit.
-- **Isolation und Unabhängigkeit**: Durch die Verwendung von Containern können verschiedene Teile der Anwendung isoliert und unabhängig voneinander entwickelt und bereitgestellt werden.
+- **Skalierbarkeit**: Cloud-Native-Anwendungen können einfach horizontal oder vertikal skaliert werden. Dies ermöglicht eine bessere Leistung und Verfügbarkeit.
+- **Isolation und Unabhängigkeit**: Durch die Verwendung von Containern können verschiedene Teile der Anwendung isoliert und unabhängig voneinander entwickelt und bereitgestellt werden (Microservice-Architektur).
 - **Schnelle Bereitstellung**: Mit Kubernetes als Orchestrierungstool können Updates und Bereitstellungen effizienter und schneller durchgeführt werden.
 - **Automatisierung**: Automatisierte Workflows, wie CI/CD, können problemlos integriert werden, um den Entwicklungs- und Bereitstellungsprozess zu beschleunigen.
 
@@ -96,7 +96,7 @@ Im folgenden wurden GitHub-Actions eingerichtet und verwendet, um einen Wokflow 
 
 ## 5 Datensicherheit und DSGVO
 Die Gewährleistung der Datensicherheit ist in einer Cloud-Native-Umgebung von entscheidender Bedeutung, insbesondere im Hinblick auf die Einhaltung der Datenschutz-Grundverordnung (DSGVO). Hier sind einige Schritte und Überlegungen:
-- **Datenverschlüsselung**: Sensible Daten sollten verschlüsselt werden, sowohl im Ruhezustand als auch während der Übertragung. Dies ist entscheidend, um Datenschutzanforderungen zu erfüllen. Durch die Verwendung eines Secrets (Siehe Abschnitt 3.1) wurde diesem Aspekt rechnung getragen.
+- **Datenverschlüsselung**: Sensible Daten sollten verschlüsselt werden, sowohl im Ruhezustand als auch während der Übertragung. Dies ist entscheidend, um Datenschutzanforderungen zu erfüllen. Durch die Verwendung eines Secrets (Siehe Abschnitt 3.1) wurde diesem Aspekt Rechnung getragen.
 - **Zugriffskontrolle**: Die Berechtigungen für den Zugriff auf Daten und Ressourcen sollten streng kontrolliert und überwacht werden, um sicherzustellen, dass nur autorisierte Benutzer auf sensible Daten zugreifen können.
 - **Auditing und Protokollierung**: Die Anwendung sollte Protokolle führen und Ereignisse aufzeichnen, um die Nachvollziehbarkeit und Compliance zu gewährleisten. Die Unterteilung in eine Prod- und eine Testumgebung sowie die Einrichtung von Continous Integration und Continous Development über GitHub-Actions (Abschnitt 3.2, 3.3 und 3.4) dokumentiert und testet Anpassungen automatisiert.
 - **DSGVO-Konformität**: Die Anwendung sollte so gestaltet sein, dass sie die Anforderungen der DSGVO erfüllt. Dies kann die Einwilligung der Benutzer, das Recht auf Löschung und das Recht auf Datenübertragbarkeit umfassen. Die in der Datenbank gespeicherten Daten (Abschnit 3.1) können gelöscht sowie einzelne To-Dos erledigt werden.
@@ -109,8 +109,6 @@ Die Realisierung als Cloud-Native-Anwendung bietet zahlreiche Vorteile, aber es 
 - **Monolithische Anwendung**: Statt einer Microservices-Architektur kann die Anwendung als ein großer monolithischer Block entwickelt werden. Dies erleichtert die Verwaltung, kann jedoch zu Problemen bei der Skalierbarkeit und Wartbarkeit führen.
 - **Traditionelle Server-Bereitstellung**: Anstelle der Verwendung von Containern und Orchestrierungstools wie Kubernetes könnte die Anwendung auf herkömmlichen Servern oder virtuellen Maschinen gehostet werden. Dies bietet weniger Automatisierung und Skalierbarkeit.
 - **Keine Cloud-Native Technologien**: Die Anwendung könnte ohne den Einsatz von Cloud-Native-Technologien entwickelt werden. In diesem Fall wären die Vorteile der Skalierbarkeit und Automatisierung möglicherweise eingeschränkt.
-
-
 
 Um eine erfolgreiche Cloud-Native-Anwendung zu entwickeln und bereitzustellen, ist es entscheidend, die Sicherheit der Daten zu gewährleisten und die Datenschutzanforderungen zu erfüllen. Gleichzeitig sollten die Vorteile der Skalierbarkeit, Automatisierung und Effizienz genutzt werden, die die Cloud-Native-Technologien bieten.
 
