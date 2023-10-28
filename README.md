@@ -14,6 +14,8 @@ Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application 
 - Tests für eine Node.js-Anwendung mithilfe von Containern ausführen
 - Konfigurieren einer CI/CD-Pipeline für eine containerisierte Node.js-Anwendung mithilfe von GitHub-Actions
 
+Unter folgendem Link werden die nachfolgenden Schritte in einem Screencast veranschaulicht: [Screencast Cloud Native Nodejs To-Do-App](https://1drv.ms/v/s!AizHg8YpSRazk9VsojFYorPQ6TvKQg?e=hrro6w) 
+
 ## 2 Installation
 
 ### 2.1 Ersteinrichtung
@@ -84,15 +86,18 @@ Im folgenden wurden GitHub-Actions eingerichtet und verwendet, um einen Wokflow 
 ## 4 Vorteile und Nachteile der Cloud-Native-Realisierung
 ### 4.1 Vorteile:
 - **Skalierbarkeit**: Cloud-Native-Anwendungen können einfach horizontal oder vertikal skaliert werden. Dies ermöglicht eine bessere Leistung und Verfügbarkeit.
-- **Isolation und Unabhängigkeit**: Durch die Verwendung von Containern können verschiedene Teile der Anwendung isoliert und unabhängig voneinander entwickelt und bereitgestellt werden (Microservice-Architektur).
+- **Kosten**: Durch die elastische Bereitstellung der Ressourcen anhand der sich änderden Workloads können bei einer Cloud Native Application im Vergleich zu On Premise Applikationen Betriebs-Kosten eingespart werden. 
+- **Isolation und Unabhängigkeit**: Durch die Verwendung von Containern (Applikation & Ihre Abhängigkeiten) können verschiedene Teile der Anwendung isoliert und unabhängig voneinander entwickelt und bereitgestellt werden (Microservice-Architektur).
 - **Schnelle Bereitstellung**: Mit Kubernetes als Orchestrierungstool können Updates und Bereitstellungen effizienter und schneller durchgeführt werden.
 - **Automatisierung**: Automatisierte Workflows, wie CI/CD, können problemlos integriert werden, um den Entwicklungs- und Bereitstellungsprozess zu beschleunigen.
+
 
 ### 4.2 Nachteile:
 - **Komplexität**: Die Einführung von Cloud-Native-Technologien kann komplex sein und erfordert eine gewisse Einarbeitung und Schulung.
 - **Kosten**: Die Nutzung von Cloud-Ressourcen kann kostspielig sein, wenn die Anwendung nicht effizient optimiert wird.
 - **Datensicherheit**: Die Sicherung von Daten und die Gewährleistung der Datensicherheit kann eine Herausforderung sein, insbesondere wenn sensible Daten verarbeitet werden.
 - **Kompatibilität**: Die Anwendung muss möglicherweise angepasst werden, um vollständig in einer Cloud-Native-Umgebung zu funktionieren.
+- **Abhängigkeit**: Durch die Nutzung eines Cloud-Providers und dessen Technologien bei der App-Entwicklung besteht die Gefahr eines Vedor-Lock-Ins.
 
 ## 5 Datensicherheit und DSGVO
 Die Gewährleistung der Datensicherheit ist in einer Cloud-Native-Umgebung von entscheidender Bedeutung, insbesondere im Hinblick auf die Einhaltung der Datenschutz-Grundverordnung (DSGVO). Hier sind einige Schritte und Überlegungen:
