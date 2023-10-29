@@ -8,6 +8,7 @@
 6. Alternative Realisierungsmöglichkeiten
 
 ## 1 Einführung
+Die Anwendung wurde unter MacOS (M1 Chip) entwickelt.
 Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application beleuchtet:
 - Containerisieren und Ausführen einer Node.js-Anwendung
 - Eine lokale Umgebung für die Entwicklung einer Node.js-Anwendung mit Containern einrichten
@@ -17,7 +18,6 @@ Mit der Docker-To-Do-App werden folgende Aspekte einer Cloud-Native Application 
 Unter folgendem Link werden die nachfolgenden Schritte in einem Screencast veranschaulicht: [Screencast Cloud Native Nodejs To-Do-App](https://1drv.ms/v/s!AizHg8YpSRazk9VsojFYorPQ6TvKQg?e=hrro6w) 
 
 ## 2 Installation
-
 ### 2.1 Ersteinrichtung
 Klone das Repository in ein lokales Verzeichnis mit: 
 `git clone https://github.com/felixscheewe/cloud-native-nodejs-to-do-app.git`
