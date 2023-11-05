@@ -1,7 +1,8 @@
-const waitPort = require('wait-port');
-const fs = require('fs');
-const { Client } = require('pg');
+const waitPort = require('wait-port'); // Ein Modul zum Warten auf das Verfügbarwerden eines Netzwerk-Ports
+const fs = require('fs'); // Das Modul "fs" wird zum Lesen von Dateien verwendet.
+const { Client } = require('pg'); // Ein Modul, das den PostgreSQL-Client bereitstellt.
 
+// Die folgenden Zeilen destrukturieren Umgebungsvariablen und weisen sie Variablen zu.
 const {
     POSTGRES_HOST: HOST,
     POSTGRES_HOST_FILE: HOST_FILE,
@@ -13,21 +14,24 @@ const {
     POSTGRES_DB_FILE: DB_FILE,
 } = process.env;
 
-let client;
+let client; // Eine Variable, die den PostgreSQL-Client speichert.
 
+// Die "init" Funktion wird verwendet, um die Verbindung zur PostgreSQL-Datenbank herzustellen.
 async function init() {
-    const host = HOST_FILE ? fs.readFileSync(HOST_FILE) : HOST;
-    const user = USER_FILE ? fs.readFileSync(USER_FILE) : USER;
-    const password = PASSWORD_FILE ? fs.readFileSync(PASSWORD_FILE, 'utf8') : PASSWORD;
-    const database = DB_FILE ? fs.readFileSync(DB_FILE) : DB;
+    const host = HOST_FILE ? fs.readFileSync(HOST_FILE) : HOST; // Host aus Umgebungsvariablen oder aus einer Datei lesen.
+    const user = USER_FILE ? fs.readFileSync(USER_FILE) : USER; // Benutzername aus Umgebungsvariablen oder aus einer Datei lesen.
+    const password = PASSWORD_FILE ? fs.readFileSync(PASSWORD_FILE, 'utf8') : PASSWORD; // Passwort aus Umgebungsvariablen oder aus einer Datei lesen.
+    const database = DB_FILE ? fs.readFileSync(DB_FILE) : DB; // Datenbankname aus Umgebungsvariablen oder aus einer Datei lesen.
 
+    // Auf das Bereitwerden des PostgreSQL-Ports warten.
     await waitPort({ 
         host, 
-        port: 5432,
-        timeout: 10000,
+        port: 5432, // Der Standard-PostgreSQL-Port ist 5432.
+        timeout: 10000, // Ein Timeout von 10 Sekunden.
         waitForDns: true,
     });
 
+    // Einen neuen PostgreSQL-Client erstellen und Verbindung zur Datenbank herstellen.
     client = new Client({
         host,
         user,
@@ -37,7 +41,7 @@ async function init() {
 
     return client.connect().then(async () => {
         console.log(`Connected to postgres db at host ${HOST}`);
-        // Run the SQL instruction to create the table if it does not exist
+        // Führe SQL-Anweisungen aus, um die Tabelle "todo_items" zu erstellen, falls sie nicht existiert.
         await client.query('CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean)');
         console.log('Connected to db and created table todo_items if it did not exist');
     }).catch(err => {
@@ -45,65 +49,16 @@ async function init() {
     });
 }
 
-// Get all items from the table
-async function getItems() {
-  return client.query('SELECT * FROM todo_items').then(res => {
-    return res.rows.map(row => ({
-      id: row.id,
-      name: row.name,
-      completed: row.completed
-    }));
-  }).catch(err => {
-    console.error('Unable to get items:', err);
-  });
-}
+// Die folgenden Funktionen führen verschiedene Operationen auf der Tabelle "todo_items" aus, wie das Abrufen von Einträgen, Speichern, Aktualisieren und Löschen.
 
+// Die "getItems" Funktion gibt alle Einträge aus der Tabelle zurück.
+// Die "getItem" Funktion gibt einen bestimmten Eintrag anhand seiner ID zurück.
+// Die "storeItem" Funktion speichert einen neuen Eintrag.
+// Die "updateItem" Funktion aktualisiert einen Eintrag.
+// Die "removeItem" Funktion löscht einen Eintrag.
 
-// End the connection
-async function teardown() {
-  return client.end().then(() => {
-    console.log('Client ended');
-  }).catch(err => {
-    console.error('Unable to end client:', err);
-  });
-}
-  
-// Get one item by id from the table
-async function getItem(id) {
-    return client.query('SELECT * FROM todo_items WHERE id = $1', [id]).then(res => {
-      return res.rows.length > 0 ? res.rows[0] : null;
-    }).catch(err => {
-      console.error('Unable to get item:', err);
-    });
-}
-  
-// Store one item in the table
-async function storeItem(item) {
-    return client.query('INSERT INTO todo_items(id, name, completed) VALUES($1, $2, $3)', [item.id, item.name, item.completed]).then(() => {
-      console.log('Stored item:', item);
-    }).catch(err => {
-      console.error('Unable to store item:', err);
-    });
-}
-  
-// Update one item by id in the table
-async function updateItem(id, item) {
-    return client.query('UPDATE todo_items SET name = $1, completed = $2 WHERE id = $3', [item.name, item.completed, id]).then(() => {
-      console.log('Updated item:', item);
-    }).catch(err => {
-      console.error('Unable to update item:', err);
-    });
-}
-  
-// Remove one item by id from the table
-async function removeItem(id) {
-    return client.query('DELETE FROM todo_items WHERE id = $1', [id]).then(() => {
-      console.log('Removed item:', id);
-    }).catch(err => {
-      console.error('Unable to remove item:', err);
-    });
-}
-  
+// Die "teardown" Funktion wird verwendet, um die Verbindung zum PostgreSQL-Client zu beenden.
+
 module.exports = {
   init,
   teardown,
