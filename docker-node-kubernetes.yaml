@@ -1,33 +1,44 @@
-apiVersion: apps/v1
+# Dies ist die API-Version für die Kubernetes-Ressourcen, in diesem Fall die Apps/v1-Version.
+apiversion: apps/v1
 kind: Deployment
 metadata:
+  # Der Name des Deployments
   name: cloud-native-nodejs-to-do-app
+  # Der Namespace, in dem das Deployment erstellt wird
   namespace: default
 spec:
+  # Anzahl der Replikate (in diesem Fall 1)
   replicas: 1
   selector:
     matchLabels:
+      # Der Label-Selektor, um Pods für dieses Deployment auszuwählen
       todo: web
   template:
     metadata:
       labels:
+        # Label für die Pods, die aus diesem Template erstellt werden
         todo: web
     spec:
       containers:
-      - name: todo-site
-        image: felixscheewe/cloud-native-nodejs-to-do-app
-        imagePullPolicy: Always
+        # Container-Beschreibung für die Pods
+        - name: todo-site
+          # Der Name des Containers
+          image: felixscheewe/cloud-native-nodejs-to-do-app
+          # Das Docker-Image, das für den Container verwendet wird
+          imagePullPolicy: Always # Pull-Richtlinie für das Image (immer aktualisieren)
+        
 ---
+# Neue Ressource: Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo-entrypoint
-  namespace: default
+  name: todo-entrypoint # Der Name des Services
+  namespace: default # Der Namespace des Services
 spec:
-  type: NodePort
+  type: NodePort # Der Service-Typ (NodePort bedeutet, dass der Service auf einem bestimmten Port auf den Knoten verfügbar ist)
   selector:
-    todo: web
+    todo: web # Label-Selektor, um die Pods auszuwählen, die von diesem Service abgedeckt werden
   ports:
-  - port: 3000
-    targetPort: 3000
-    nodePort: 30001
+    - port: 3000 # Der Port, unter dem der Service im Cluster verfügbar ist
+      targetPort: 3000 # Der Port, zu dem der Traffic an die Pods weitergeleitet wird
+      nodePort: 30001 # Der NodePort, unter dem der Service auf den Knoten verfügbar ist
