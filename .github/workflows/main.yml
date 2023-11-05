@@ -1,38 +1,38 @@
-name: ci
+name: CI  # Name der Workflow
 
 on:
-  push:
+  push:  # Der Workflow wird ausgelöst, wenn Code in das Repository gepusht wird
     branches:
-      - main
+      - main  # Es wird nur auf dem "main"-Zweig ausgeführt
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Die Pipeline wird auf einem Ubuntu-Latest-Laufzeitumgebung ausgeführt
+
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v4
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v3
+      - name: Checkout  # Schritt, um das Repository auszuchecken
+        uses: actions/checkout@v4  # Verwendet die GitHub-Aktion 'actions/checkout@v4'
+
+      - name: Login to Docker Hub  # Schritt, um sich bei Docker Hub anzumelden
+        uses: docker/login-action@v3  # Verwendet die Docker-Aktion 'docker/login-action@v3'
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Build and test
-        uses: docker/build-push-action@v5
+          username: ${{ secrets.DOCKER_USERNAME }}  # Docker Hub Benutzername aus GitHub-Secrets
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  # Docker Hub Token aus GitHub-Secrets
+
+      - name: Set up Docker Buildx  # Schritt, um Docker Buildx einzurichten
+        uses: docker/setup-buildx-action@v3  # Verwendet die Docker-Aktion 'docker/setup-buildx-action@v3'
+
+      - name: Build and test  # Schritt, um das Docker-Image zu erstellen und zu testen
+        uses: docker/build-push-action@v5  # Verwendet die Docker-Aktion 'docker/build-push-action@v5'
         with:
-          context: .
-          target: test
-          load: true
-      -
-        name: Build and push
-        uses: docker/build-push-action@v5
+          context: .  # Der Build-Kontext ist das aktuelle Verzeichnis
+          target: test  # Das Build-Ziel ist 'test'
+          load: true  # Das erstellte Image wird in Docker geladen
+
+      - name: Build and push  # Schritt, um das Docker-Image zu erstellen und in Docker Hub zu pushen
+        uses: docker/build-push-action@v5  # Verwendet die Docker-Aktion 'docker/build-push-action@v5'
         with:
-          context: .
-          push: true
-          target: prod
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+          context: .  # Der Build-Kontext ist das aktuelle Verzeichnis
+          push: true  # Das Image wird in Docker Hub veröffentlicht
+          target: prod  # Das Build-Ziel ist 'prod'
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest  # Tags für das veröffentlichte Image
