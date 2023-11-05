@@ -1,44 +1,47 @@
 services:
-  server:
-    build:
-      context: .
-      target: dev
-    environment:
-      NODE_ENV: production
-      POSTGRES_HOST: db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
-      POSTGRES_DB: example
-    ports:
-      - 3000:3000
-      - 9229:9229
-    depends_on:
-      db:
-        condition: service_healthy
-    secrets:
-      - db-password
-    volumes:
-      - ./src:/usr/src/app/src
-  db:
-    image: postgres
-    restart: always
-    user: postgres
-    secrets:
-      - db-password
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=example
-      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-    expose:
-      - 5432
-    healthcheck:
-      test: [ "CMD", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  server:  # Definiert den Node.js-Server-Container
+    build:  # Definiert die Build-Konfiguration für den Container
+      context: .  # Das Build-Kontextverzeichnis ist das aktuelle Verzeichnis
+      target: dev  # Das Build-Ziel ist 'dev'
+    environment:  # Setzt Umgebungsvariablen für den Container
+      NODE_ENV: production  # Setzt die Node.js-Umgebungsvariable auf 'production'
+      POSTGRES_HOST: db  # Setzt den Hostnamen für die PostgreSQL-Datenbank auf 'db'
+      POSTGRES_USER: postgres  # Setzt den Benutzernamen für die PostgreSQL-Datenbank auf 'postgres'
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password  # Verweist auf das Docker-Secret für das PostgreSQL-Passwort
+      POSTGRES_DB: example  # Setzt den Namen der PostgreSQL-Datenbank auf 'example'
+    ports:  # Legt Port-Weiterleitungen fest
+      - 3000:3000  # Port 3000 auf dem Host wird auf Port 3000 im Container weitergeleitet
+      - 9229:9229  # Port 9229 auf dem Host wird auf Port 9229 im Container weitergeleitet
+    depends_on:  # Gibt an, von welchen Diensten dieser Dienst abhängt
+      db:  # Dieser Dienst hängt von der Datenbank ab
+        condition: service_healthy  # Abhängigkeit wird als "service_healthy" behandelt
+    secrets:  # Verwendet Docker-Secrets
+      - db-password  # Verwendet das Secret "db-password"
+    volumes:  # Bindet Host-Verzeichnisse an den Container
+      - ./src:/usr/src/app/src  # Verzeichnis auf dem Host wird auf Verzeichnis im Container gemappt
+
+  db:  # Definiert den PostgreSQL-Datenbank-Container
+    image: postgres  # Verwendet das PostgreSQL-Image aus dem Docker-Hub
+    restart: always  # Der Container wird immer neu gestartet, wenn er beendet wird
+    user: postgres  # Verwendet den Benutzer "postgres" im Container
+    secrets:  # Verwendet Docker-Secrets
+      - db-password  # Verwendet das Secret "db-password"
+    volumes:  # Bindet Host-Verzeichnisse an den Container
+      - db-data:/var/lib/postgresql/data  # Verzeichnis auf dem Host wird auf Datenverzeichnis im Container gemappt
+    environment:  # Setzt Umgebungsvariablen für den Container
+      - POSTGRES_DB=example  # Setzt den Namen der PostgreSQL-Datenbank auf 'example'
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password  # Verweist auf das Docker-Secret für das PostgreSQL-Passwort
+    expose:  # Legt freigegebene Ports im Container fest
+      - 5432  # Port 5432 im Container wird freigegeben
+    healthcheck:  # Definiert einen Gesundheitscheck für den Container
+      test: ["CMD", "pg_isready"]  # Überprüft, ob PostgreSQL bereit ist
+      interval: 10s  # Intervall zwischen den Gesundheitschecks
+      timeout: 5s  # Timeout für den Gesundheitscheck
+      retries: 5  # Anzahl der Wiederholungsversuche
+
 volumes:
-  db-data:
+  db-data:  # Definiert einen benannten Docker-Volume "db-data"
+
 secrets:
-  db-password:
+  db-password:  # Definiert ein Docker-Secret "db-password" als Datei mit dem Inhalt "db/password.txt"
     file: db/password.txt
