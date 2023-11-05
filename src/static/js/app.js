@@ -1,3 +1,4 @@
+// Importieren der notwendigen React- und ReactBootstrap-Module
 function App() {
     const { Container, Row, Col } = ReactBootstrap;
     return (
@@ -11,15 +12,19 @@ function App() {
     );
 }
 
+// Komponente zur Anzeige der Aufgabenliste
 function TodoListCard() {
+    // Zustand für die Liste von Aufgaben
     const [items, setItems] = React.useState(null);
 
+    // Effekt, um die Aufgabenliste vom Server abzurufen
     React.useEffect(() => {
         fetch('/items')
             .then(r => r.json())
             .then(setItems);
     }, []);
 
+    // Callback-Funktionen zum Hinzufügen, Aktualisieren und Entfernen von Aufgaben
     const onNewItem = React.useCallback(
         newItem => {
             setItems([...items, newItem]);
@@ -47,6 +52,7 @@ function TodoListCard() {
         [items],
     );
 
+    // Anzeige der Aufgabenliste
     if (items === null) return 'Loading...';
 
     return (
@@ -67,12 +73,15 @@ function TodoListCard() {
     );
 }
 
+// Komponente zum Hinzufügen von Aufgaben
 function AddItemForm({ onNewItem }) {
     const { Form, InputGroup, Button } = ReactBootstrap;
 
+    // Zustand für die neue Aufgabe und das Submitting-Flag
     const [newItem, setNewItem] = React.useState('');
     const [submitting, setSubmitting] = React.useState(false);
 
+    // Funktion zum Hinzufügen einer neuen Aufgabe
     const submitNewItem = e => {
         e.preventDefault();
         setSubmitting(true);
@@ -89,6 +98,7 @@ function AddItemForm({ onNewItem }) {
             });
     };
 
+    // Anzeige des Formulars zum Hinzufügen von Aufgaben
     return (
         <Form onSubmit={submitNewItem}>
             <InputGroup className="mb-3">
@@ -114,9 +124,11 @@ function AddItemForm({ onNewItem }) {
     );
 }
 
+// Komponente zur Anzeige einer einzelnen Aufgabe
 function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     const { Container, Row, Col, Button } = ReactBootstrap;
 
+    // Funktion zum Umschalten des Erledigungsstatus einer Aufgabe
     const toggleCompletion = () => {
         fetch(`/items/${item.id}`, {
             method: 'PUT',
@@ -130,12 +142,14 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
             .then(onItemUpdate);
     };
 
+    // Funktion zum Entfernen einer Aufgabe
     const removeItem = () => {
         fetch(`/items/${item.id}`, { method: 'DELETE' }).then(() =>
             onItemRemoval(item),
         );
     };
 
+    // Anzeige einer Aufgabe
     return (
         <Container fluid className={`item ${item.completed && 'completed'}`}>
             <Row>
@@ -176,4 +190,5 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     );
 }
 
+// Rendern der Haupt-App-Komponente in der DOM-Wurzel
 ReactDOM.render(<App />, document.getElementById('root'));
