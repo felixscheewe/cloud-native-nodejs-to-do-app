@@ -1,37 +1,32 @@
 {
-  "name": "cloud-native-nodejs-to-do-app", // Der Name des Node.js-Projekts
-  "version": "1.0.0", // Die Version des Projekts
-  "main": "index.js", // Der Einstiegspunkt des Projekts
-
+  "name": "cloud-native-nodejs-to-do-app",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "prettify": "prettier -l --write \"**/*.js\"", // Ein Skript zum Formatieren des Quellcodes mit Prettier
-    "test": "jest", // Ein Skript zum Ausführen von Jest-Tests
-    "dev": "nodemon --inspect=0.0.0.0:9229 -L src/index.js" // Ein Entwicklungs-Skript, das nodemon verwendet, um den Server neu zu starten, wenn sich der Quellcode ändert
+    "prettify": "prettier -l --write \"**/*.js\"",
+    "test": "jest",
+    "dev": "nodemon --inspect=0.0.0.0:9229 -L src/index.js"
   },
-
   "dependencies": {
-    "express": "^4.18.2", // Abhängigkeit von Express.js
-    "pg": "^8.11.2", // Abhängigkeit von pg (PostgreSQL-Treiber)
-    "sqlite3": "^5.1.2", // Abhängigkeit von sqlite3 (SQLite-Treiber)
-    "uuid": "^9.0.0", // Abhängigkeit von uuid
-    "wait-port": "^1.0.4" // Abhängigkeit von wait-port
+    "express": "^4.18.2",
+    "pg": "^8.11.2",
+    "sqlite3": "^5.1.2",
+    "uuid": "^9.0.0",
+    "wait-port": "^1.0.4"
   },
-
   "resolutions": {
-    "ansi-regex": "5.0.1" // Festgelegte Auflösung für das Paket ansi-regex auf Version 5.0.1
+    "ansi-regex": "5.0.1"
   },
-
   "prettier": {
-    "trailingComma": "all", // Prettier-Konfiguration für das Hinzufügen von Kommas am Zeilenende
-    "tabWidth": 4, // Prettier-Konfiguration für die Tab-Breite
-    "useTabs": false, // Prettier-Konfiguration, um Leerzeichen anstelle von Tabs zu verwenden
-    "semi": true, // Prettier-Konfiguration, um Semikolons am Zeilenende einzufügen
-    "singleQuote": true // Prettier-Konfiguration, um einfache Anführungszeichen für Zeichenketten zu verwenden
+    "trailingComma": "all",
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true
   },
-
   "devDependencies": {
-    "jest": "^29.6.2", // Entwicklungsumgebung - Jest für Tests
-    "nodemon": "^3.0.1", // Entwicklungsumgebung - nodemon für den Entwicklungsmodus mit automatischem Neustart
-    "prettier": "^2.7.1" // Entwicklungsumgebung - Prettier für die Codeformatierung
+    "jest": "^29.6.2",
+    "nodemon": "^3.0.1",
+    "prettier": "^2.7.1"
   }
 }
